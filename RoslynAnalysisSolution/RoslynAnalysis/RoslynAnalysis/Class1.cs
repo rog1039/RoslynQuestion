@@ -49,6 +49,8 @@ namespace RoslynAnalysis
                             }
                         }
                     }
+
+                    _testOutputHelper.WriteLine(Environment.NewLine);
                 }
             }
         }
