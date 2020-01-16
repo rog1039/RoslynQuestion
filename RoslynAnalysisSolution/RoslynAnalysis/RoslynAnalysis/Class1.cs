@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.MSBuild;
@@ -41,10 +42,8 @@ namespace RoslynAnalysis
                                 {
                                     var propertySymbol = semanticModel.GetDeclaredSymbol(propertyDeclarationSyntax);
 
-                                    var typeInfo = $"Property Type: {propertySymbol.Type.ToDisplayString()}:{propertySymbol.Type.ContainingAssembly.ToDisplayString(),-80} |";
-                                    var propInfo = $"Property: {propertySymbol.ToDisplayString()}";
-                                    _testOutputHelper.WriteLine($"{typeInfo} - {propInfo}");
-
+                                    PrintPropertyInfoToConsole(propertySymbol);
+                                    
                                     break;
                                 }
                             }
@@ -77,9 +76,7 @@ namespace RoslynAnalysis
                                 {
                                     var propertySymbol = semanticModel.GetDeclaredSymbol(propertyDeclarationSyntax);
 
-                                    var typeInfo = $"Property Type: {propertySymbol.Type.ToDisplayString()}:{propertySymbol.Type.ContainingAssembly.ToDisplayString(),-80} |";
-                                    var propInfo = $"Property: {propertySymbol.ToDisplayString()}";
-                                    _testOutputHelper.WriteLine($"{typeInfo} - {propInfo}");
+                                    PrintPropertyInfoToConsole(propertySymbol);
 
                                     break;
                                 }
@@ -88,6 +85,14 @@ namespace RoslynAnalysis
                     }
                 }
             }
+        }
+
+        private void PrintPropertyInfoToConsole(IPropertySymbol propertySymbol)
+        {
+            var typeInfo =
+                $"Property Type: {propertySymbol.Type.ToDisplayString(),-18}:{propertySymbol.Type.ContainingAssembly.ToDisplayString(),-90} |";
+            var propInfo = $"Property: {propertySymbol.ToDisplayString()}";
+            _testOutputHelper.WriteLine($"{typeInfo} - {propInfo}");
         }
 
         public Class1(ITestOutputHelper testOutputHelper)
